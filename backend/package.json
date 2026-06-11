@@ -8,7 +8,12 @@
     "dev": "nodemon server.js",
     "seed": "node seed.js"
   },
-  "keywords": ["cleaning", "services", "express", "mongodb"],
+  "keywords": [
+    "cleaning",
+    "services",
+    "express",
+    "mongodb"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -21,7 +26,7 @@
     "express-validator": "^7.0.1",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.0.0"
+    "mongoose": "^8.24.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
