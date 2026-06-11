@@ -1,60 +1,47 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, User, Bell, ExternalLink, Shield } from 'lucide-react';
+import { Menu, User, ExternalLink, Shield } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const AdminHeader = ({ onMenuClick }) => {
   const { user } = useAuth();
 
   return (
-    <header style={{
-      background: '#fff',
-      borderBottom: '1px solid #e5e7eb',
-      padding: '0 24px',
-      height: 64,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      flexShrink: 0,
-      position: 'sticky',
-      top: 0,
-      zIndex: 30,
-    }}>
+    <header className="flex items-center justify-between px-6 flex-shrink-0 border-b border-white/10"
+      style={{ background: '#0B1220', height: 64, position: 'sticky', top: 0, zIndex: 30 }}
+    >
       {/* Left — hamburger + page title */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+      <div className="flex items-center gap-4">
         <button
           onClick={onMenuClick}
-          className="admin-hamburger-btn"
-          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 6, borderRadius: 8, color: '#374151', display: 'none' }}
+          className="admin-hamburger-btn bg-none border-none cursor-pointer p-1.5 rounded-lg text-surface-muted hover:text-white transition-colors hidden"
         >
           <Menu size={22} />
         </button>
         <div>
-          <div style={{ fontWeight: 800, fontSize: 17, color: '#0f172a' }}>Admin Panel</div>
-          <div style={{ fontSize: 11, color: '#94a3b8' }}>Naina Cleaning Services</div>
+          <div className="text-white font-extrabold text-lg leading-tight">Admin Panel</div>
+          <div className="text-surface-muted text-xs">Naina Cleaning Services</div>
         </div>
       </div>
 
       {/* Right — view site + user info */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+      <div className="flex items-center gap-3">
         <Link
           to="/"
           target="_blank"
-          style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#64748b', textDecoration: 'none', fontSize: 13, fontWeight: 600, padding: '7px 14px', border: '1px solid #e5e7eb', borderRadius: 8, transition: 'all .2s' }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = '#c0392b'; e.currentTarget.style.color = '#c0392b'; }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = '#e5e7eb'; e.currentTarget.style.color = '#64748b'; }}
+          className="flex items-center gap-1.5 text-surface-muted no-underline text-sm font-semibold px-4 py-2 rounded-lg border border-white/10 hover:border-primary/50 hover:text-primary transition-all"
         >
           <ExternalLink size={14} /> View Site
         </Link>
 
         {/* User badge */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: '#f8fafc', border: '1px solid #e5e7eb', borderRadius: 10, padding: '7px 14px' }}>
-          <div style={{ width: 30, height: 30, borderRadius: '50%', background: user?.role === 'superadmin' ? '#7c3aed' : '#2563eb', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+        <div className="flex items-center gap-2.5 rounded-xl px-4 py-2 border border-white/10" style={{ background: 'rgba(255,255,255,.03)' }}>
+          <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-primary">
             {user?.role === 'superadmin' ? <Shield size={14} color="#fff" /> : <User size={14} color="#fff" />}
           </div>
           <div className="admin-user-info">
-            <div style={{ fontWeight: 700, fontSize: 13, color: '#0f172a', lineHeight: 1.2 }}>{user?.username || 'Admin'}</div>
-            <div style={{ fontSize: 11, color: '#94a3b8' }}>{user?.role === 'superadmin' ? 'Super Admin' : 'Admin'}</div>
+            <div className="text-white font-bold text-sm leading-tight">{user?.username || 'Admin'}</div>
+            <div className="text-surface-muted text-xs">{user?.role === 'superadmin' ? 'Super Admin' : 'Admin'}</div>
           </div>
         </div>
       </div>

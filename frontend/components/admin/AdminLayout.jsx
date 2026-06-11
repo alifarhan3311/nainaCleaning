@@ -7,17 +7,12 @@ const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div style={{
-      display: 'flex',
-      minHeight: '100vh',
-      background: '#f1f5f9',
-      fontFamily: "'Segoe UI', system-ui, sans-serif",
-    }}>
+    <div className="flex min-h-screen font-sans" style={{ background: '#0B1220' }}>
       <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(o => !o)} />
 
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: '100vh' }}>
+      <div className="flex-1 flex flex-col min-w-0 min-h-screen">
         <AdminHeader onMenuClick={() => setSidebarOpen(o => !o)} />
-        <main style={{ flex: 1, padding: '28px 28px', overflowY: 'auto' }}>
+        <main className="flex-1 p-7 overflow-y-auto">
           <Outlet />
         </main>
       </div>

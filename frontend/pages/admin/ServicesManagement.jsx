@@ -35,65 +35,65 @@ const ServiceModal = ({ service, onClose, onSave }) => {
   };
 
   return (
-    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
-      <div style={{ background: '#fff', borderRadius: 16, width: '100%', maxWidth: 520, padding: 32, position: 'relative', maxHeight: '90vh', overflowY: 'auto' }}>
-        <button onClick={onClose} style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', cursor: 'pointer' }}>
-          <X size={20} />
+    <div className="fixed inset-0 bg-black/60 z-[1000] flex items-center justify-center p-4">
+      <div className="glass-card w-full max-w-lg p-8 relative max-h-[90vh] overflow-y-auto">
+        <button onClick={onClose} className="absolute top-4 right-4 w-8 h-8 rounded-lg flex items-center justify-center hover:bg-white/10 transition-colors">
+          <X size={18} className="text-surface-muted" />
         </button>
-        <h2 style={{ margin: '0 0 24px', fontSize: 20, fontWeight: 700 }}>{service ? 'Edit Service' : 'Add New Service'}</h2>
+        <h2 className="text-xl font-bold text-white mb-6">{service ? 'Edit Service' : 'Add New Service'}</h2>
         <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: 16 }}>
-            <label style={{ display: 'block', fontSize: 13, fontWeight: 600, marginBottom: 6, color: '#374151' }}>Title *</label>
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-surface-muted mb-1.5">Title *</label>
             <input
               name="title"
               value={form.title}
               onChange={handleChange}
               placeholder="e.g. Office Cleaning"
-              style={{ width: '100%', padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 14, outline: 'none', boxSizing: 'border-box' }}
+              className="input-dark w-full"
             />
           </div>
-          <div style={{ marginBottom: 16 }}>
-            <label style={{ display: 'block', fontSize: 13, fontWeight: 600, marginBottom: 6, color: '#374151' }}>Description *</label>
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-surface-muted mb-1.5">Description *</label>
             <textarea
               name="description"
               value={form.description}
               onChange={handleChange}
               placeholder="Describe what this service includes..."
               rows={4}
-              style={{ width: '100%', padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 14, outline: 'none', resize: 'vertical', boxSizing: 'border-box' }}
+              className="input-dark w-full resize-y"
             />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
+          <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
-              <label style={{ display: 'block', fontSize: 13, fontWeight: 600, marginBottom: 6, color: '#374151' }}>Icon (emoji)</label>
+              <label className="block text-sm font-semibold text-surface-muted mb-1.5">Icon (emoji)</label>
               <input
                 name="icon"
                 value={form.icon}
                 onChange={handleChange}
                 placeholder="🏢"
-                style={{ width: '100%', padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 20, outline: 'none', boxSizing: 'border-box' }}
+                className="input-dark w-full text-center text-2xl"
               />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: 13, fontWeight: 600, marginBottom: 6, color: '#374151' }}>Price Range</label>
+              <label className="block text-sm font-semibold text-surface-muted mb-1.5">Price Range</label>
               <input
                 name="priceRange"
                 value={form.priceRange}
                 onChange={handleChange}
                 placeholder="e.g. $150 - $300"
-                style={{ width: '100%', padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 14, outline: 'none', boxSizing: 'border-box' }}
+                className="input-dark w-full"
               />
             </div>
           </div>
-          <div style={{ marginBottom: 24, display: 'flex', alignItems: 'center', gap: 8 }}>
-            <input type="checkbox" name="isActive" id="isActive" checked={form.isActive} onChange={handleChange} />
-            <label htmlFor="isActive" style={{ fontSize: 14, fontWeight: 500, color: '#374151', cursor: 'pointer' }}>Active (visible on website)</label>
+          <div className="mb-6 flex items-center gap-3">
+            <input type="checkbox" name="isActive" id="isActive" checked={form.isActive} onChange={handleChange} className="w-4 h-4 accent-primary" />
+            <label htmlFor="isActive" className="text-sm font-medium text-surface-muted cursor-pointer">Active (visible on website)</label>
           </div>
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end' }}>
-            <button type="button" onClick={onClose} style={{ padding: '10px 20px', border: '1px solid #e5e7eb', borderRadius: 8, background: '#fff', cursor: 'pointer', fontSize: 14, fontWeight: 600 }}>
+          <div className="flex gap-3 justify-end">
+            <button type="button" onClick={onClose} className="px-5 py-2.5 border border-white/10 rounded-lg text-sm font-semibold text-surface-muted hover:bg-white/5 transition-colors">
               Cancel
             </button>
-            <button type="submit" disabled={saving} style={{ padding: '10px 24px', background: '#2563eb', color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer', fontSize: 14, fontWeight: 600, opacity: saving ? 0.7 : 1 }}>
+            <button type="submit" disabled={saving} className="btn-primary px-6">
               {saving ? 'Saving...' : service ? 'Update Service' : 'Add Service'}
             </button>
           </div>
@@ -188,7 +188,7 @@ const ServicesManagement = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="w-12 h-12 rounded-full border-2 border-white/10 border-t-primary animate-spin" />
       </div>
     );
   }
@@ -204,44 +204,49 @@ const ServicesManagement = () => {
       )}
 
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Services Management</h1>
+        <div>
+          <h1 className="text-2xl font-bold text-white">Services Management</h1>
+          <p className="text-surface-muted text-sm mt-1">{services.length} service{services.length !== 1 ? 's' : ''} total</p>
+        </div>
         <Button icon={Plus} onClick={openAdd}>Add Service</Button>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Icon</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price Range</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+      <div className="glass-card overflow-hidden">
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-white/6">
+              <th className="px-5 py-3.5 text-left text-xs font-semibold text-surface-muted uppercase tracking-wider">Icon</th>
+              <th className="px-5 py-3.5 text-left text-xs font-semibold text-surface-muted uppercase tracking-wider">Title</th>
+              <th className="px-5 py-3.5 text-left text-xs font-semibold text-surface-muted uppercase tracking-wider">Description</th>
+              <th className="px-5 py-3.5 text-left text-xs font-semibold text-surface-muted uppercase tracking-wider">Price Range</th>
+              <th className="px-5 py-3.5 text-left text-xs font-semibold text-surface-muted uppercase tracking-wider">Status</th>
+              <th className="px-5 py-3.5 text-left text-xs font-semibold text-surface-muted uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody>
             {services.map((service) => (
-              <tr key={service._id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap text-2xl">{service.icon}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900">{service.title}</div>
+              <tr key={service._id} className="border-b border-white/4 hover:bg-white/3 transition-colors">
+                <td className="px-5 py-4 text-2xl">{service.icon}</td>
+                <td className="px-5 py-4">
+                  <div className="text-sm font-semibold text-white">{service.title}</div>
                 </td>
-                <td className="px-6 py-4">
-                  <div className="text-sm text-gray-600 max-w-xs truncate">{service.description}</div>
+                <td className="px-5 py-4">
+                  <div className="text-sm text-surface-muted max-w-xs truncate">{service.description}</div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-600">{service.priceRange || '-'}</div>
+                <td className="px-5 py-4">
+                  <div className="text-sm text-surface-muted">{service.priceRange || '-'}</div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${service.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                <td className="px-5 py-4">
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${service.isActive ? 'bg-teal/15 text-teal' : 'bg-red-500/15 text-red-400'}`}>
                     {service.isActive ? 'Active' : 'Inactive'}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                  <Button variant="outline" size="sm" icon={Power} onClick={() => handleToggle(service)}>Toggle</Button>
-                  <Button variant="outline" size="sm" icon={Edit} onClick={() => openEdit(service)}>Edit</Button>
-                  <Button variant="danger" size="sm" icon={Trash2} onClick={() => handleDelete(service._id)}>Delete</Button>
+                <td className="px-5 py-4">
+                  <div className="flex items-center gap-2">
+                    <Button variant="ghost" size="sm" icon={Power} onClick={() => handleToggle(service)} className="hover:text-teal">Toggle</Button>
+                    <Button variant="ghost" size="sm" icon={Edit} onClick={() => openEdit(service)} className="hover:text-primary">Edit</Button>
+                    <Button variant="danger" size="sm" icon={Trash2} onClick={() => handleDelete(service._id)}>Delete</Button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -250,7 +255,7 @@ const ServicesManagement = () => {
 
         {services.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-gray-600 mb-4">No services found</p>
+            <p className="text-surface-muted mb-4">No services found</p>
             <Button icon={Plus} onClick={openAdd}>Add Your First Service</Button>
           </div>
         )}

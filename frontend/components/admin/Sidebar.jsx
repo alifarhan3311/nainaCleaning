@@ -21,70 +21,60 @@ const Sidebar = ({ isOpen, onToggle }) => {
       {isOpen && (
         <div
           onClick={onToggle}
-          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,.5)', zIndex: 40 }}
+          className="fixed inset-0 z-40 lg:hidden"
+          style={{ background: 'rgba(0,0,0,.5)' }}
         />
       )}
 
       {/* Sidebar */}
-      <aside style={{
-        position: 'fixed', top: 0, left: 0,
-        width: 260, height: '100vh',
-        background: '#0f172a',
-        display: 'flex', flexDirection: 'column',
-        zIndex: 50,
-        transform: isOpen ? 'translateX(0)' : 'translateX(-100%)',
-        transition: 'transform .3s',
-        flexShrink: 0,
-      }}
-        className="admin-sidebar"
+      <aside
+        className="admin-sidebar fixed top-0 left-0 h-screen w-64 flex flex-col z-50 flex-shrink-0 transition-transform duration-300 lg:static lg:translate-x-0"
+        style={{ background: '#0B1220', transform: isOpen ? 'translateX(0)' : 'translateX(-100%)' }}
       >
         {/* Header */}
-        <div style={{ padding: '20px 20px 18px', borderBottom: '1px solid rgba(255,255,255,.08)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-            <div style={{ width: 36, height: 36, borderRadius: 8, background: '#c0392b', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 900, fontSize: 14 }}>NC</div>
+        <div className="px-5 py-5 border-b border-white/10 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-3 no-underline">
+            <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center text-white font-black text-sm">NC</div>
             <div>
-              <div style={{ color: '#fff', fontWeight: 800, fontSize: 14, lineHeight: 1.2 }}>Admin Panel</div>
-              <div style={{ color: '#64748b', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Naina Cleaning</div>
+              <div className="text-white font-extrabold text-sm leading-tight">Admin Panel</div>
+              <div className="text-surface-muted text-[10px] uppercase tracking-widest">Naina Cleaning</div>
             </div>
           </Link>
-          <button onClick={onToggle} className="sidebar-close-btn" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: '#64748b' }}>
+          <button onClick={onToggle} className="sidebar-close-btn bg-none border-none cursor-pointer p-1 text-surface-muted hover:text-white transition-colors">
             <X size={18} />
           </button>
         </div>
 
         {/* User info */}
-        <div style={{ padding: '16px 20px', borderBottom: '1px solid rgba(255,255,255,.06)', display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div style={{ width: 38, height: 38, borderRadius: '50%', background: '#1e3a5f', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-            {user?.role === 'superadmin' ? <Shield size={18} color="#60a5fa" /> : <Users size={18} color="#60a5fa" />}
+        <div className="px-5 py-4 border-b border-white/6 flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(185,28,28,.2)' }}>
+            {user?.role === 'superadmin' ? <Shield size={18} className="text-primary" /> : <Users size={18} className="text-primary" />}
           </div>
-          <div style={{ overflow: 'hidden' }}>
-            <div style={{ color: '#fff', fontWeight: 700, fontSize: 13, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user?.username || 'Admin'}</div>
-            <div style={{ color: '#64748b', fontSize: 11, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user?.email}</div>
+          <div className="overflow-hidden">
+            <div className="text-white font-bold text-sm truncate">{user?.username || 'Admin'}</div>
+            <div className="text-surface-muted text-xs truncate">{user?.email}</div>
           </div>
           {user?.role === 'superadmin' && (
-            <div style={{ marginLeft: 'auto', background: 'rgba(167,139,250,.15)', color: '#a78bfa', fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 999, whiteSpace: 'nowrap' }}>Super</div>
+            <div className="ml-auto bg-primary/20 text-primary text-[10px] font-bold px-2 py-1 rounded-full whitespace-nowrap">Super</div>
           )}
         </div>
 
         {/* Nav */}
-        <nav style={{ flex: 1, padding: '12px 12px', overflowY: 'auto' }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: '#475569', letterSpacing: '0.1em', textTransform: 'uppercase', padding: '8px 8px 12px' }}>Navigation</div>
+        <nav className="flex-1 px-3 py-3 overflow-y-auto">
+          <div className="text-[10px] font-bold text-surface-muted tracking-widest uppercase px-2 pb-3 pt-1">Navigation</div>
           {navItems.map(({ name, path, icon: Icon, exact }) => (
             <NavLink
               key={path}
               to={path}
               end={exact}
               onClick={() => { if (window.innerWidth < 1024) onToggle(); }}
-              style={({ isActive }) => ({
-                display: 'flex', alignItems: 'center', gap: 12,
-                padding: '11px 12px', borderRadius: 10, marginBottom: 4,
-                textDecoration: 'none', fontWeight: 600, fontSize: 14,
-                transition: 'background .15s',
-                background: isActive ? '#2563eb' : 'transparent',
-                color: isActive ? '#fff' : '#94a3b8',
-              })}
-              onMouseEnter={e => { if (!e.currentTarget.style.background.includes('2563eb')) e.currentTarget.style.background = 'rgba(255,255,255,.06)'; }}
-              onMouseLeave={e => { if (!e.currentTarget.style.background.includes('2563eb')) e.currentTarget.style.background = 'transparent'; }}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3 py-2.5 rounded-lg mb-1 no-underline font-semibold text-sm transition-all duration-150 ${
+                  isActive
+                    ? 'bg-primary text-white'
+                    : 'text-surface-muted hover:bg-white/5 hover:text-white'
+                }`
+              }
             >
               <Icon size={18} />
               {name}
@@ -93,18 +83,10 @@ const Sidebar = ({ isOpen, onToggle }) => {
         </nav>
 
         {/* Logout */}
-        <div style={{ padding: '12px', borderTop: '1px solid rgba(255,255,255,.06)' }}>
+        <div className="p-3 border-t border-white/6">
           <button
             onClick={logout}
-            style={{
-              width: '100%', display: 'flex', alignItems: 'center', gap: 12,
-              padding: '11px 12px', borderRadius: 10,
-              background: 'none', border: 'none', cursor: 'pointer',
-              color: '#ef4444', fontWeight: 600, fontSize: 14,
-              transition: 'background .15s',
-            }}
-            onMouseEnter={e => e.currentTarget.style.background = 'rgba(239,68,68,.1)'}
-            onMouseLeave={e => e.currentTarget.style.background = 'none'}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg bg-none border-none cursor-pointer text-red-400 font-semibold text-sm hover:bg-red-500/10 transition-colors"
           >
             <LogOut size={18} />
             Logout

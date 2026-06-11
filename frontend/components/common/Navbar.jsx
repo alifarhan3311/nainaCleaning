@@ -1,20 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Phone, Menu, X, Shield } from 'lucide-react';
+import { Phone, Menu, X, Shield, Sparkles } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-
-/* ── same tokens as Services page ── */
-const RED   = '#c0392b';
-const DARK  = '#1a1a2e';
-const MUTED = '#6b7280';
-const TEXT  = '#2d2d2d';
 
 const NAV_LINKS = [
   { name: 'Home',     path: '/' },
   { name: 'About',    path: '/about' },
   { name: 'Services', path: '/services' },
   { name: 'Gallery',  path: '/gallery' },
-  { name: 'Contact',  path: '/contact' },
+  { name: 'Contact',   path: '/contact' },
 ];
 
 const Navbar = () => {
@@ -24,7 +18,7 @@ const Navbar = () => {
   const location = useLocation();
 
   React.useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 50);
+    const fn = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', fn);
     return () => window.removeEventListener('scroll', fn);
   }, []);
@@ -32,190 +26,117 @@ const Navbar = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <nav style={{
-      position: 'sticky', top: 0, zIndex: 200,
-      background: scrolled ? 'rgba(255,255,255,.97)' : '#fff',
-      boxShadow: scrolled ? '0 2px 20px rgba(0,0,0,.08)' : '0 1px 0 #e5e7eb',
-      transition: 'all .3s',
-    }}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      scrolled ? 'glass shadow-lg shadow-black/20' : 'bg-transparent'
+    }`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-3 group flex-shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-700 flex items-center justify-center shadow-lg shadow-primary/30 group-hover:shadow-primary/50 transition-shadow">
+              <Sparkles className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <span className="text-xl font-bold text-white tracking-tight">
+                Naina<span className="text-primary">Clean</span>
+              </span>
+              <p className="text-[10px] text-surface-muted -mt-1 tracking-widest uppercase">
+                Premium Services
+              </p>
+            </div>
+          </Link>
 
-      {/* ── main bar ── */}
-      <div style={{
-        maxWidth: 1140, margin: '0 auto', padding: '0 24px',
-        display: 'flex', alignItems: 'center', height: 68, gap: 8,
-      }}>
-
-        {/* Logo */}
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', marginRight: 12, flexShrink: 0 }}>
-          <div style={{
-            width: 40, height: 40, borderRadius: 10, background: RED,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: '#fff', fontWeight: 900, fontSize: 15,
-          }}>NC</div>
-          <div>
-            <div style={{ fontWeight: 800, fontSize: 15, color: DARK, lineHeight: 1.2 }}>Naina Cleaning</div>
-            <div style={{ fontSize: 10, color: MUTED, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Professional Cleaning</div>
+          {/* Desktop nav links */}
+          <div className="hidden lg:flex items-center gap-1">
+            {NAV_LINKS.map(({ name, path }) => (
+              <Link
+                key={name}
+                to={path}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  isActive(path)
+                    ? 'text-primary bg-primary/10'
+                    : 'text-white/70 hover:text-white hover:bg-white/5'
+                }`}
+              >{name}</Link>
+            ))}
           </div>
-        </Link>
 
-        {/* Desktop nav links */}
-        <div className="nav-links-desktop">
-          {NAV_LINKS.map(({ name, path }) => (
-            <Link
-              key={name}
-              to={path}
-              style={{
-                color: isActive(path) ? RED : TEXT,
-                textDecoration: 'none',
-                fontWeight: 600,
-                fontSize: 14,
-                padding: '4px 2px',
-                borderBottom: isActive(path) ? `2px solid ${RED}` : '2px solid transparent',
-                whiteSpace: 'nowrap',
-                transition: 'color .18s',
-              }}
-            >{name}</Link>
-          ))}
+          {/* Desktop right */}
+          <div className="hidden lg:flex items-center gap-4">
+            <a href="tel:6479736745" className="flex items-center gap-2 text-sm text-surface-muted hover:text-accent transition-colors">
+              <Phone size={14} /> 647-973-6745
+            </a>
+
+            {isAuthenticated ? (
+              <>
+                <Link to="/admin" className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white/70 hover:text-white hover:bg-white/5 transition-all">
+                  <Shield size={14} /> Admin
+                </Link>
+                <button onClick={logout} className="px-4 py-2 bg-white/10 text-white text-sm font-semibold rounded-lg border border-white/20 hover:bg-white/20 transition-all">
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="px-4 py-2 text-sm font-medium text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all">
+                  Login
+                </Link>
+                <Link to="/contact" className="btn-primary !py-2.5 !px-5 text-sm">
+                  Get Free Quote
+                </Link>
+              </>
+            )}
+          </div>
+
+          {/* Hamburger */}
+          <button
+            onClick={() => setMenuOpen(o => !o)}
+            className="lg:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? <X size={22} className="text-white" /> : <Menu size={22} className="text-white" />}
+          </button>
         </div>
-
-        {/* Desktop right */}
-        <div className="nav-right-desktop">
-          <a href="tel:6479736745" style={{
-            display: 'flex', alignItems: 'center', gap: 6,
-            color: RED, fontWeight: 700, fontSize: 13,
-            textDecoration: 'none', whiteSpace: 'nowrap',
-          }}>
-            <Phone size={14} /> 647-973-6745
-          </a>
-
-          {isAuthenticated ? (
-            <>
-              <Link to="/admin" style={{
-                display: 'inline-flex', alignItems: 'center', gap: 6,
-                color: TEXT, textDecoration: 'none', fontWeight: 600,
-                fontSize: 13, padding: '8px 14px',
-                border: '1px solid #e5e7eb', borderRadius: 8,
-                whiteSpace: 'nowrap',
-              }}>
-                <Shield size={13} /> Admin
-              </Link>
-              <button onClick={logout} style={{
-                background: '#374151', color: '#fff', border: 'none',
-                borderRadius: 8, padding: '9px 18px',
-                fontWeight: 700, fontSize: 13, cursor: 'pointer',
-              }}>Logout</button>
-            </>
-          ) : (
-            <>
-              <Link to="/login" style={{
-                color: TEXT, textDecoration: 'none', fontWeight: 600,
-                fontSize: 13, padding: '8px 16px',
-                border: '1px solid #e5e7eb', borderRadius: 8,
-                whiteSpace: 'nowrap',
-              }}>Login</Link>
-              <Link to="/contact" style={{
-                background: RED, color: '#fff', textDecoration: 'none',
-                borderRadius: 8, padding: '9px 20px',
-                fontWeight: 700, fontSize: 13, whiteSpace: 'nowrap',
-              }}>Free Quote</Link>
-            </>
-          )}
-        </div>
-
-        {/* Hamburger */}
-        <button
-          onClick={() => setMenuOpen(o => !o)}
-          className="nav-hamburger"
-          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 6, marginLeft: 'auto' }}
-          aria-label="Toggle menu"
-        >
-          {menuOpen ? <X size={22} color={TEXT} /> : <Menu size={22} color={TEXT} />}
-        </button>
       </div>
 
-      {/* ── Mobile menu ── */}
+      {/* Mobile menu */}
       {menuOpen && (
-        <div style={{ background: '#fff', borderTop: '1px solid #f3f4f6', padding: '12px 24px 24px' }}>
+        <div className="lg:hidden glass border-t border-white/10 px-4 py-4 space-y-1">
           {NAV_LINKS.map(({ name, path }) => (
             <Link
               key={name}
               to={path}
               onClick={() => setMenuOpen(false)}
-              style={{
-                display: 'block', padding: '12px 0',
-                borderBottom: '1px solid #f9fafb',
-                color: isActive(path) ? RED : TEXT,
-                textDecoration: 'none', fontWeight: 600, fontSize: 15,
-              }}
+              className={`block px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                isActive(path)
+                  ? 'text-primary bg-primary/10'
+                  : 'text-white/70 hover:text-white hover:bg-white/5'
+              }`}
             >{name}</Link>
           ))}
-
-          <a href="tel:6479736745" style={{
-            display: 'flex', alignItems: 'center', gap: 8,
-            color: RED, fontWeight: 700, fontSize: 14,
-            textDecoration: 'none', padding: '12px 0',
-            borderBottom: '1px solid #f9fafb',
-          }}>
-            <Phone size={15} /> 647-973-6745
-          </a>
-
-          <div style={{ display: 'flex', gap: 10, marginTop: 16 }}>
+          <div className="pt-3 border-t border-white/10 space-y-2">
             {isAuthenticated ? (
               <>
-                <Link to="/admin" onClick={() => setMenuOpen(false)} style={{
-                  flex: 1, textAlign: 'center', padding: '11px',
-                  border: '1px solid #e5e7eb', borderRadius: 8,
-                  color: TEXT, textDecoration: 'none', fontWeight: 600, fontSize: 14,
-                }}>Admin Panel</Link>
-                <button onClick={() => { logout(); setMenuOpen(false); }} style={{
-                  flex: 1, background: '#374151', color: '#fff',
-                  border: 'none', borderRadius: 8, padding: '11px',
-                  fontWeight: 700, fontSize: 14, cursor: 'pointer',
-                }}>Logout</button>
+                <Link to="/admin" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium text-white/70 hover:text-white hover:bg-white/5 transition-all">
+                  <Shield size={14} /> Admin
+                </Link>
+                <button onClick={() => { logout(); setMenuOpen(false); }} className="w-full px-4 py-3 bg-white/10 text-white text-sm font-semibold rounded-xl border border-white/20 hover:bg-white/20 transition-all">
+                  Logout
+                </button>
               </>
             ) : (
               <>
-                <Link to="/login" onClick={() => setMenuOpen(false)} style={{
-                  flex: 1, textAlign: 'center', padding: '11px',
-                  border: '1px solid #e5e7eb', borderRadius: 8,
-                  color: TEXT, textDecoration: 'none', fontWeight: 600, fontSize: 14,
-                }}>Login</Link>
-                <Link to="/contact" onClick={() => setMenuOpen(false)} style={{
-                  flex: 1, textAlign: 'center',
-                  background: RED, color: '#fff',
-                  textDecoration: 'none', borderRadius: 8,
-                  padding: '11px', fontWeight: 700, fontSize: 14,
-                }}>Free Quote</Link>
+                <Link to="/login" onClick={() => setMenuOpen(false)} className="block px-4 py-3 rounded-xl text-sm font-medium text-white/70 hover:text-white hover:bg-white/5 transition-all">
+                  Login
+                </Link>
+                <Link to="/contact" onClick={() => setMenuOpen(false)} className="btn-primary w-full justify-center">
+                  Get Free Quote
+                </Link>
               </>
             )}
           </div>
         </div>
       )}
-
-      {/* Responsive styles */}
-      <style>{`
-        .nav-links-desktop {
-          flex: 1;
-          display: flex;
-          align-items: center;
-          gap: 28px;
-          margin-left: 8px;
-        }
-        .nav-right-desktop {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          margin-left: auto;
-          flex-shrink: 0;
-        }
-        .nav-hamburger { display: none !important; }
-
-        @media (max-width: 768px) {
-          .nav-links-desktop { display: none !important; }
-          .nav-right-desktop  { display: none !important; }
-          .nav-hamburger      { display: flex !important; }
-        }
-      `}</style>
     </nav>
   );
 };
