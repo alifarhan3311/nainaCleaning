@@ -1,0 +1,33 @@
+FROM node:22-alpine AS builder
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm ci
+
+COPY . .
+
+ARG VITE_API_URL=/api
+ARG VITE_API_TIMEOUT=30000
+ARG VITE_APP_NAME=Naina Cleaning Service
+ARG VITE_APP_URL=https://nainacleaning.com
+
+ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_API_TIMEOUT=$VITE_API_TIMEOUT
+ENV VITE_APP_NAME=$VITE_APP_NAME
+ENV VITE_APP_URL=$VITE_APP_URL
+
+RUN npm run build
+
+FROM node:22-alpine
+
+WORKDIR /app
+
+RUN npm install -g serve
+
+COPY --from=builder /app/dist ./dist
+
+EXPOSE 80
+
+CMD ["serve", "-s", "dist", "-l", "80"]

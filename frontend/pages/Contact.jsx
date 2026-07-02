@@ -79,10 +79,11 @@ const Contact = () => {
       {/* ── MAIN CONTENT ── */}
       <section className="py-20 bg-surface/50">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid lg:grid-cols-[1.1fr_1fr] gap-12 items-start">
+          {/* <div className="grid lg:grid-cols-[1.1fr_1fr] gap-12 items-start"> */}
 
+<div className="justify-content-center col-5">
             {/* ── Contact Form ── */}
-            <div className="glass-card p-8 sm:p-10">
+            {/* <div className="glass-card p-8 sm:p-10">
               <h2 className="text-2xl font-bold text-white mb-1">Send Us a Message</h2>
               <p className="text-surface-muted text-sm mb-8">Fill out the form and we'll get back to you within 24 hours.</p>
 
@@ -157,7 +158,7 @@ const Contact = () => {
                   </div>
                 </form>
               )}
-            </div>
+            </div> */}
 
             {/* ── Contact Info ── */}
             <div>

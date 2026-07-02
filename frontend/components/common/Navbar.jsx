@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Phone, Menu, X, Shield, Sparkles } from 'lucide-react';
+import { Phone, Menu, X, Shield, PaintBucket } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const NAV_LINKS = [
   { name: 'Home',     path: '/' },
   { name: 'About',    path: '/about' },
   { name: 'Services', path: '/services' },
-  { name: 'Gallery',  path: '/gallery' },
   { name: 'Contact',   path: '/contact' },
 ];
 
@@ -34,7 +33,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group flex-shrink-0">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-700 flex items-center justify-center shadow-lg shadow-primary/30 group-hover:shadow-primary/50 transition-shadow">
-              <Sparkles className="w-5 h-5 text-white" />
+              <PaintBucket className="w-5 h-5 text-white" />
             </div>
             <div>
               <span className="text-xl font-bold text-white tracking-tight">

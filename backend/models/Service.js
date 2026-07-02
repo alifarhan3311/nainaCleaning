@@ -39,6 +39,32 @@ const serviceSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  // Additional fields for frontend service cards
+  color: {
+    type: String,
+    default: '#1e3a5f',
+  },
+  iconColor: {
+    type: String,
+    default: '#60a5fa',
+  },
+  tagline: {
+    type: String,
+    default: '',
+  },
+  ideal: {
+    type: String,
+    default: '',
+  },
+  freq: {
+    type: String,
+    default: '',
+  },
+  category: {
+    type: String,
+    enum: ['residential', 'commercial'],
+    required: true,
+  },
 }, {
   timestamps: true,
 });

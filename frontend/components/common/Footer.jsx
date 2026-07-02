@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Phone, Mail, MapPin, Clock, Sparkles  } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, PaintBucket } from 'lucide-react';
 
 const Footer = () => (
   <footer className="bg-midnight border-t border-white/10">
@@ -10,7 +10,7 @@ const Footer = () => (
         <div className="lg:col-span-1">
           <Link to="/" className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-700 flex items-center justify-center shadow-lg shadow-primary/30">
-              <Sparkles className="w-5 h-5 text-white" />
+              <PaintBucket className="w-5 h-5 text-white" />
             </div>
             <div>
               <span className="text-xl font-bold text-white tracking-tight">
@@ -24,17 +24,7 @@ const Footer = () => (
           <p className="text-surface-muted text-sm leading-relaxed mb-6">
             Professional residential and commercial cleaning services in Mississauga. Trusted by hundreds of clients since 2000.
           </p>
-          <div className="flex items-center gap-3">
-            <a href="#" className="w-10 h-10 rounded-xl bg-white/5 hover:bg-primary/20 flex items-center justify-center text-surface-muted hover:text-primary transition-all">
-              <Mail className="w-4 h-4" />
-            </a>
-            <a href="#" className="w-10 h-10 rounded-xl bg-white/5 hover:bg-primary/20 flex items-center justify-center text-surface-muted hover:text-primary transition-all">
-              <Mail className="w-4 h-4" />
-            </a>
-            <a href="#" className="w-10 h-10 rounded-xl bg-white/5 hover:bg-primary/20 flex items-center justify-center text-surface-muted hover:text-primary transition-all">
-              <Mail className="w-4 h-4" />
-            </a>
-          </div>
+        
         </div>
 
         {/* Quick Links */}
@@ -44,7 +34,7 @@ const Footer = () => (
             Quick Links
           </h4>
           <ul className="space-y-3">
-            {[['Home', '/'], ['About', '/about'], ['Services', '/services'], ['Gallery', '/gallery'], ['Contact', '/contact']].map(([label, path]) => (
+            {[['Home', '/'], ['About', '/about'], ['Services', '/services'], ['Contact', '/contact']].map(([label, path]) => (
               <li key={label}>
                 <Link to={path} className="text-surface-muted hover:text-white transition-colors text-sm inline-flex items-center gap-2 group">
                   <span className="w-0 group-hover:w-2 h-px bg-primary transition-all duration-200"></span>

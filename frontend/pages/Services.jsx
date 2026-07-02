@@ -8,242 +8,9 @@ import {
   Home, Building2, Sparkles, Wind, Sun, Wrench,
   CalendarCheck, ThumbsUp, Mail, ChevronRight, Sparkle,
 } from 'lucide-react';
+import { serviceService } from '../services/serviceService';
 
-/* ══════════════════════════════════════
-   DATA
-══════════════════════════════════════ */
-const RESIDENTIAL_SERVICES = [
-  {
-    id: 'r1',
-    icon: Home,
-    title: 'Standard Home Cleaning',
-    badge: 'Most Popular',
-    tagline: 'Regular maintenance for a spotless home',
-    description: 'Our standard cleaning covers all the essentials — dusting, vacuuming, mopping, bathroom sanitization, and kitchen cleaning. Perfect for weekly or bi-weekly schedules.',
-    includes: [
-      'All bedrooms dusted & vacuumed',
-      'Bathrooms fully sanitized',
-      'Kitchen surfaces & appliance exteriors',
-      'Living areas vacuumed & mopped',
-      'Trash removal throughout',
-      'Window sills & baseboards wiped',
-    ],
-    ideal: 'Families, homeowners, renters',
-    freq: 'Weekly / Bi-weekly / Monthly',
-    color: '#1e3a5f',
-    iconColor: '#60a5fa',
-  },
-  {
-    id: 'r2',
-    icon: Sparkles,
-    title: 'Deep Home Cleaning',
-    badge: 'Thorough',
-    tagline: 'Top-to-bottom intensive clean',
-    description: 'A comprehensive deep clean targeting every corner — inside appliances, behind furniture, grout scrubbing, and detailed sanitization. Ideal for seasonal or first-time cleans.',
-    includes: [
-      'Inside oven, fridge & microwave',
-      'Cabinet interiors wiped down',
-      'Grout & tile scrubbing',
-      'Behind & under all furniture',
-      'Interior windows & tracks cleaned',
-      'Full bathroom descaling',
-    ],
-    ideal: 'First-time clients, seasonal refresh',
-    freq: 'One-time / Quarterly',
-    color: '#3d2914',
-    iconColor: '#fb923c',
-  },
-  {
-    id: 'r3',
-    icon: Wind,
-    title: 'Move-In / Move-Out Cleaning',
-    badge: 'Specialized',
-    tagline: 'Fresh start for every transition',
-    description: "Whether you're moving in or out, we leave the property spotless. We handle everything from top to bottom so you get your deposit back or start fresh in a clean space.",
-    includes: [
-      'Full interior deep clean',
-      'Inside all cabinets & drawers',
-      'Appliances cleaned inside & out',
-      'Walls spot-cleaned',
-      'All floors scrubbed & polished',
-      'Garage & storage area swept',
-    ],
-    ideal: 'Tenants, landlords, property managers',
-    freq: 'One-time',
-    color: '#0d3d2d',
-    iconColor: '#4ade80',
-  },
-  {
-    id: 'r4',
-    icon: CalendarCheck,
-    title: 'Recurring Maid Service',
-    badge: 'Best Value',
-    tagline: 'Consistent cleanliness, hassle-free',
-    description: "Subscribe to a regular cleaning schedule and never worry about your home again. Same trusted cleaner every visit, tailored to your home's specific needs.",
-    includes: [
-      'Dedicated assigned cleaner',
-      'Customized cleaning checklist',
-      'Priority scheduling',
-      'Flexible rescheduling',
-      'Progress reports & communication',
-      'Discounted recurring rates',
-    ],
-    ideal: 'Busy professionals, families',
-    freq: 'Weekly / Bi-weekly',
-    color: '#2d1f4d',
-    iconColor: '#c084fc',
-  },
-];
-
-const COMMERCIAL_SERVICES = [
-  {
-    id: 'c1',
-    icon: Building2,
-    title: 'Office Cleaning',
-    badge: 'Core Service',
-    tagline: 'Professional spaces, professional results',
-    description: 'Regular and thorough cleaning to maintain a professional environment. We work around your office hours with minimal disruption — evenings, weekends, or early mornings.',
-    includes: [
-      'Workstations & desks sanitized',
-      'Common areas vacuumed & mopped',
-      'Kitchenette & break room cleaned',
-      'Washrooms fully sanitized',
-      'Trash & recycling emptied',
-      'Reception & lobby maintained',
-    ],
-    ideal: 'Corporate offices, startups, law firms',
-    freq: 'Daily / Weekly / Custom',
-    color: '#1e3a5f',
-    iconColor: '#60a5fa',
-  },
-  {
-    id: 'c2',
-    icon: Wrench,
-    title: 'Janitorial Services',
-    badge: 'Comprehensive',
-    tagline: 'Full-service facility maintenance',
-    description: 'Complete day-porter and janitorial programs for commercial facilities. Our trained staff maintain your building throughout the day — restrooms, common areas, and more.',
-    includes: [
-      'Day porter & after-hours programs',
-      'Restroom restocking & sanitization',
-      'High-traffic area maintenance',
-      'Elevator & lobby upkeep',
-      'Waste management',
-      'Dedicated account manager',
-    ],
-    ideal: 'Large facilities, malls, schools',
-    freq: 'Daily / On-demand',
-    color: '#3d2914',
-    iconColor: '#fb923c',
-  },
-  {
-    id: 'c3',
-    icon: Sun,
-    title: 'Post-Construction Cleaning',
-    badge: 'Specialized',
-    tagline: 'Ready for occupancy — guaranteed',
-    description: 'After renovations or new builds, dust and debris are everywhere. We do a complete clean-up so your space is safe, presentable, and ready for clients or employees.',
-    includes: [
-      'Dust removal from all surfaces',
-      'Construction debris disposal',
-      'Window & frame cleaning',
-      'Floor scrubbing & polishing',
-      'HVAC vent dusting',
-      'Final inspection walkthrough',
-    ],
-    ideal: 'Contractors, developers, businesses',
-    freq: 'One-time / Project-based',
-    color: '#0d3d2d',
-    iconColor: '#4ade80',
-  },
-  {
-    id: 'c4',
-    icon: Wind,
-    title: 'Carpet Steam Cleaning',
-    badge: 'Deep Clean',
-    tagline: 'Restore your carpets to like-new condition',
-    description: 'Hot-water extraction deep cleaning removes embedded dirt, allergens, bacteria, and stains. Commercial-grade equipment for superior results — dry in 2–4 hours.',
-    includes: [
-      'Pre-treatment of stains & spots',
-      'Hot-water extraction process',
-      'Deodorizing treatment',
-      'Rapid drying (2–4 hrs)',
-      'High-traffic lane restoration',
-      'Protective coating available',
-    ],
-    ideal: 'Hotels, offices, rental properties',
-    freq: 'Quarterly / As needed',
-    color: '#2d1f4d',
-    iconColor: '#c084fc',
-  },
-  {
-    id: 'c5',
-    icon: Home,
-    title: 'Floor Maintenance',
-    badge: 'Floor Care',
-    tagline: 'Strip, wax, and restore any floor type',
-    description: 'Professional floor care including stripping, waxing, hardwood varnishing, tile & grout restoration. We keep your floors gleaming and protected year-round.',
-    includes: [
-      'Strip & wax VCT/vinyl floors',
-      'Hardwood buffing & varnishing',
-      'Tile & grout deep cleaning',
-      'Marble & stone polishing',
-      'Anti-slip coating',
-      'Scheduled maintenance programs',
-    ],
-    ideal: 'Retail, healthcare, schools',
-    freq: 'Monthly / Quarterly',
-    color: '#3d3d1a',
-    iconColor: '#facc15',
-  },
-  {
-    id: 'c6',
-    icon: Sparkles,
-    title: 'Window Cleaning',
-    badge: 'Crystal Clear',
-    tagline: 'Streak-free inside and out',
-    description: 'Interior and exterior commercial window cleaning using professional squeegee systems and eco-safe solutions. High-rise and multi-story buildings welcome.',
-    includes: [
-      'Interior & exterior panes',
-      'Frame & sill cleaning',
-      'Screen removal & cleaning',
-      'High-rise rope access',
-      'Storefront glass polishing',
-      'Seasonal programs available',
-    ],
-    ideal: 'High-rises, storefronts, offices',
-    freq: 'Monthly / Bi-annual',
-    color: '#0d3d4d',
-    iconColor: '#22d3ee',
-  },
-];
-
-const PROCESS = [
-  { num: '01', title: 'Free Consultation', desc: 'We assess your space, understand your specific needs, and discuss your schedule and budget.' },
-  { num: '02', title: 'Custom Cleaning Plan', desc: 'We build a tailored cleaning plan with a clear scope of work — no cookie-cutter packages.' },
-  { num: '03', title: 'Professional Execution', desc: 'Our certified, insured team arrives on time and completes the job to our high standards.' },
-  { num: '04', title: 'Quality Inspection', desc: 'A supervisor reviews the work before we leave. Your satisfaction is our guarantee.' },
-];
-
-const FAQS = [
-  { q: 'Do you bring your own cleaning supplies and equipment?', a: 'Yes — we supply all professional-grade cleaning products and commercial equipment. We use eco-certified, WHMIS-compliant products that are safe for employees, clients, and the environment.' },
-  { q: 'Are your staff insured and background-checked?', a: 'Absolutely. All team members are fully insured, bonded, and have passed thorough background checks. We carry $5M liability insurance for complete peace of mind.' },
-  { q: 'Can I customize which rooms or areas get cleaned?', a: "Yes. Every cleaning plan is customized. We'll discuss exactly which areas you want included, frequency, and any specific requirements during your free consultation." },
-  { q: "What if I'm not satisfied with the cleaning?", a: 'We offer a 100% satisfaction guarantee. If you\'re not happy with any aspect of the service, contact us within 24 hours and we\'ll return to re-clean the area at no extra charge.' },
-  { q: 'Do you offer one-time cleans or only recurring contracts?', a: 'We offer both. Whether you need a one-time deep clean, a post-construction cleanup, or a recurring weekly program — we can accommodate your needs.' },
-  { q: 'How far in advance do I need to book?', a: 'We recommend booking 48–72 hours in advance. However, we do our best to accommodate urgent requests. For large commercial projects, earlier planning is recommended.' },
-];
-
-const TESTIMONIALS = [
-  { name: 'Sarah M.', role: 'Office Manager', txt: 'The office cleaning team is incredible. Always on time, thorough, and they really listen to our specific needs. Our workplace has never been this clean!', rating: 5, init: 'S' },
-  { name: 'David K.', role: 'Property Manager', txt: 'Used them for move-out cleaning on 3 units. Every single time, spotless results. Got all our tenant deposits back. Will continue using them.', rating: 5, init: 'D' },
-  { name: 'Linda T.', role: 'Homeowner', txt: "The deep home cleaning was worth every penny. They cleaned things I didn't even think to ask for. Felt like a brand new house when they were done.", rating: 5, init: 'L' },
-];
-
-/* ══════════════════════════════════════
-   SUB-COMPONENTS
-══════════════════════════════════════ */
-
+/* AnimCounter component for animated numbers */
 function AnimCounter({ target }) {
   const [val, setVal] = useState(0);
   const ref = useRef();
@@ -253,12 +20,12 @@ function AnimCounter({ target }) {
   useEffect(() => {
     const obs = new IntersectionObserver(([e]) => {
       if (e.isIntersecting) {
-        let cur = 0;
+        let start = 0;
         const step = Math.ceil(num / 60);
-        const t = setInterval(() => {
-          cur += step;
-          if (cur >= num) { setVal(num); clearInterval(t); }
-          else setVal(cur);
+        const timer = setInterval(() => {
+          start += step;
+          if (start >= num) { setVal(num); clearInterval(timer); }
+          else setVal(start);
         }, 20);
         obs.disconnect();
       }
@@ -270,26 +37,25 @@ function AnimCounter({ target }) {
   return <span ref={ref}>{val}{suffix}</span>;
 }
 
-function FaqItem({ q, a }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="border-b border-surface/20">
-      <button
-        onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between py-5 bg-none border-none cursor-pointer text-left gap-4"
-      >
-        <span className="font-semibold text-white text-sm">{q}</span>
-        <ChevronDown size={18} className={`text-primary flex-shrink-0 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
-      </button>
-      {open && (
-        <div className="pb-5 text-surface-muted text-sm leading-relaxed">{a}</div>
-      )}
-    </div>
-  );
-}
+/* Icon map for string -> component */
+const iconMap = {
+  Home,
+  Building2,
+  Sparkles,
+  Wind,
+  Sun,
+  Wrench,
+  CalendarCheck,
+  // Add any others if needed
+};
 
-function ServiceCard({ svc, index }) {
+/* ═══════════════════════════════════════
+   ServiceCard Component
+═══════════════════════════════════════ */
+function ServiceCard({ service, index }) {
   const [hovered, setHovered] = useState(false);
+  const IconComponent = iconMap[service.icon] || Home; // fallback
+
   return (
     <div
       onMouseEnter={() => setHovered(true)}
@@ -297,42 +63,48 @@ function ServiceCard({ svc, index }) {
       className={`glass-card overflow-hidden transition-all duration-300 hover:-translate-y-1 ${hovered ? 'border-primary/30' : ''}`}
     >
       {/* Card top color block */}
-      <div style={{ height: 130, background: svc.color, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+      <div style={{ height: 130, background: service.color, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
         <div style={{ width: 64, height: 64, borderRadius: 18, background: '#0B1220', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 16px rgba(0,0,0,.3)' }}>
-          <svc.icon size={30} color={svc.iconColor} strokeWidth={1.8} />
+          <IconComponent size={30} color={service.iconColor} strokeWidth={1.8} />
         </div>
-        {svc.badge && (
+        {service.tagline && (
           <div className="absolute top-4 right-4 bg-primary text-white text-[10px] font-bold rounded-full px-3 py-1 tracking-wide uppercase">
-            {svc.badge}
+            {service.tagline}
           </div>
         )}
       </div>
       {/* Card body */}
       <div className="p-6">
-        <h3 className="text-lg font-bold text-white mb-1">{svc.title}</h3>
-        <p className="text-primary text-xs font-semibold mb-3">{svc.tagline}</p>
-        <p className="text-surface-muted text-sm leading-relaxed mb-4">{svc.description}</p>
+        <h3 className="text-lg font-bold text-white mb-1">{service.title}</h3>
+        {service.tagline && <p className="text-primary text-xs font-semibold mb-3">{service.tagline}</p>}
+        <p className="text-surface-muted text-sm leading-relaxed mb-4">{service.description}</p>
 
         {/* Includes list */}
-        <div className="bg-surface/50 rounded-xl p-4 mb-4">
-          <div className="text-[11px] font-bold text-surface-muted uppercase tracking-wider mb-3">What's Included</div>
-          <ul className="flex flex-col gap-2">
-            {svc.includes.map(item => (
-              <li key={item} className="flex items-start gap-2 text-sm text-white">
-                <CheckCircle size={14} className="text-primary flex-shrink-0 mt-0.5" /> {item}
-              </li>
-            ))}
-          </ul>
-        </div>
+        {service.features && service.features.length > 0 && (
+          <div className="bg-surface/50 rounded-xl p-4 mb-4">
+            <div className="text-[11px] font-bold text-surface-muted uppercase tracking-wider mb-3">What's Included</div>
+            <ul className="flex flex-col gap-2">
+              {service.features.map((item, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-white">
+                  <CheckCircle size={14} className="text-primary flex-shrink-0 mt-0.5" /> {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* Meta */}
         <div className="flex gap-2 flex-wrap mb-4">
-          <div className="text-xs bg-teal/20 text-teal rounded-md px-3 py-1.5 font-semibold">
-            {svc.ideal}
-          </div>
-          <div className="text-xs bg-blue-500/20 text-blue-400 rounded-md px-3 py-1.5 font-semibold">
-            {svc.freq}
-          </div>
+          {service.ideal && (
+            <div className="text-xs bg-teal/20 text-teal rounded-md px-3 py-1.5 font-semibold">
+              {service.ideal}
+            </div>
+          )}
+          {service.freq && (
+            <div className="text-xs bg-blue-500/20 text-blue-400 rounded-md px-3 py-1.5 font-semibold">
+              {service.freq}
+            </div>
+          )}
         </div>
 
         <Link to="/contact" className={`w-full justify-center flex items-center gap-2 font-bold text-sm px-4 py-3 rounded-xl border-2 transition-all duration-200 ${hovered ? 'bg-primary border-primary text-white' : 'border-primary text-primary hover:bg-primary/10'}`}>
@@ -343,26 +115,89 @@ function ServiceCard({ svc, index }) {
   );
 }
 
-/* ══════════════════════════════════════
+/* ═══════════════════════════════════════
    MAIN SERVICES PAGE
-══════════════════════════════════════ */
+   ═══════════════════════════════════════ */
 const Services = () => {
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('all');
-
-  const tabs = [
-    { id: 'all', label: 'All Services' },
-    { id: 'residential', label: 'Residential' },
-    { id: 'commercial', label: 'Commercial' },
-  ];
+  const [openFaqIndex, setOpenFaqIndex] = useState(null);
 
   const residentialRef = useRef();
   const commercialRef = useRef();
 
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        setLoading(true);
+        const res = await serviceService.getServices({ limit: 100 });
+        if (res.success && res.data.services) {
+          setServices(res.data.services);
+        } else {
+          setError('Failed to load services');
+        }
+      } catch (err) {
+        setError('Unable to connect to server. Please ensure the backend is running.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
+
+  if (loading) return (
+    <div className="min-h-screen bg-midnight flex items-center justify-center">
+      <div className="text-white text-lg">Loading services...</div>
+    </div>
+  );
+  
+  if (error) return (
+    <div className="min-h-screen bg-midnight flex items-center justify-center">
+      <div className="text-red-500 text-lg">{error}</div>
+    </div>
+  );
+
+  const residential = services.filter(s => s.category === 'residential');
+  const commercial = services.filter(s => s.category === 'commercial');
+
   const scrollTo = (ref) => ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  const faqs = [
+    {
+      q: 'Do you bring your own cleaning supplies and equipment?',
+      a: 'Yes — we supply all professional-grade cleaning products and commercial equipment. We use eco-certified, WHMIS-compliant products that are safe for employees, clients, and the environment.'
+    },
+    {
+      q: 'Are your staff insured and background-checked?',
+      a: 'Absolutely. All team members are fully insured, bonded, and have passed thorough background checks. We carry $5M liability insurance for complete peace of mind.'
+    },
+    {
+      q: 'Can I customize which rooms or areas get cleaned?',
+      a: "Yes. Every cleaning plan is customized. We'll discuss exactly which areas you want included, frequency, and any specific requirements during your free consultation."
+    },
+    {
+      q: "What if I'm not satisfied with the cleaning?",
+      a: 'We offer a 100% satisfaction guarantee. If you\'re not happy with any aspect of the service, contact us within 24 hours and we\'ll return to re-clean the area at no extra charge.'
+    },
+    {
+      q: 'Do you offer one-time cleans or only recurring contracts?',
+      a: 'We offer both. Whether you need a one-time deep clean, a post-construction cleanup, or a recurring weekly program — we can accommodate your needs.'
+    },
+    {
+      q: 'How far in advance do I need to book?',
+      a: 'We recommend booking 48–72 hours in advance. However, we do our best to accommodate urgent requests. For large commercial projects, earlier planning is recommended.'
+    }
+  ];
+
+  const toggleFaq = (index) => {
+    setOpenFaqIndex(openFaqIndex === index ? null : index);
+  };
 
   return (
     <div className="min-h-screen bg-midnight">
-
       <Navbar />
 
       {/* ── HERO ── */}
@@ -445,28 +280,37 @@ const Services = () => {
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Tab bar */}
-        <div className="bg-card border-t border-white/10">
-          <div className="max-w-7xl mx-auto px-6 flex">
-            {tabs.map(t => (
-              <button
-                key={t.id}
-                onClick={() => {
-                  setActiveTab(t.id);
-                  if (t.id === 'residential') scrollTo(residentialRef);
-                  else if (t.id === 'commercial') scrollTo(commercialRef);
-                }}
-                className={`px-7 py-5 font-bold text-sm border-b-2 transition-all duration-200 ${activeTab === t.id ? 'text-primary border-primary' : 'text-surface-muted border-transparent hover:text-white'}`}
-              >
-                {t.label}
-              </button>
-            ))}
-            <div className="ml-auto flex items-center">
-              <a href="tel:6479736745" className="flex items-center gap-1.5 text-primary font-bold text-sm hover:text-primary-400 transition-colors">
-                <Phone size={14} /> Call for Instant Quote
-              </a>
+          {/* Tab bar */}
+          <div className="bg-card border-t border-white/10">
+            <div className="max-w-7xl mx-auto px-6 flex flex-wrap">
+              {[
+                { id: 'all', label: 'All Services' },
+                { id: 'residential', label: 'Residential' },
+                { id: 'commercial', label: 'Commercial' },
+              ].map(t => {
+                const isActive = activeTab === t.id;
+                return (
+                  <button
+                    key={t.id}
+                    onClick={() => {
+                      setActiveTab(t.id);
+                      if (t.id === 'residential') scrollTo(residentialRef);
+                      else if (t.id === 'commercial') scrollTo(commercialRef);
+                    }}
+                    className={`px-7 py-5 font-bold text-sm border-b-2 transition-all duration-200 ${
+                      isActive ? 'text-primary border-primary' : 'text-surface-muted border-transparent hover:text-white'
+                    }`}
+                  >
+                    {t.label}
+                  </button>
+                );
+              })}
+              <div className="ml-auto flex items-center">
+                <a href="tel:6479736745" className="flex items-center gap-1.5 text-primary font-bold text-sm hover:text-primary-400 transition-colors">
+                  <Phone size={14} /> Call for Instant Quote
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -491,7 +335,15 @@ const Services = () => {
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
-            {RESIDENTIAL_SERVICES.map((svc, i) => <ServiceCard key={svc.id} svc={svc} index={i} />)}
+            {residential.length > 0 ? (
+              residential.map((svc, i) => (
+                <ServiceCard key={svc._id || i} service={svc} index={i} />
+              ))
+            ) : (
+              <div className="col-span-2 text-center text-surface-muted py-10">
+                No residential services available at the moment.
+              </div>
+            )}
           </div>
 
           {/* Residential CTA strip */}
@@ -529,7 +381,15 @@ const Services = () => {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {COMMERCIAL_SERVICES.map((svc, i) => <ServiceCard key={svc.id} svc={svc} index={i} />)}
+            {commercial.length > 0 ? (
+              commercial.map((svc, i) => (
+                <ServiceCard key={svc._id || i} service={svc} index={i} />
+              ))
+            ) : (
+              <div className="col-span-3 text-center text-surface-muted py-10">
+                No commercial services available at the moment.
+              </div>
+            )}
           </div>
 
           {/* Commercial CTA strip */}
@@ -561,9 +421,14 @@ const Services = () => {
             From first contact to spotless results — here's what to expect when you work with us.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {PROCESS.map((step, i) => (
+            {[
+              { num: '01', title: 'Free Consultation', desc: 'We assess your space, understand your specific needs, and discuss your schedule and budget.' },
+              { num: '02', title: 'Custom Cleaning Plan', desc: 'We build a tailored cleaning plan with a clear scope of work — no cookie-cutter packages.' },
+              { num: '03', title: 'Professional Execution', desc: 'Our certified, insured team arrives on time and completes the job to our high standards.' },
+              { num: '04', title: 'Quality Inspection', desc: 'A supervisor reviews the work before we leave. Your satisfaction is our guarantee.' },
+            ].map((step, i) => (
               <div key={i} className="relative">
-                {i < PROCESS.length - 1 && (
+                {i < 3 && (
                   <div className="hidden lg:block absolute top-6 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-primary to-surface/30 z-0" />
                 )}
                 <div className="glass-card p-8 relative z-10">
@@ -612,21 +477,32 @@ const Services = () => {
               </div>
             </div>
             <div className="flex flex-col gap-5">
-              {TESTIMONIALS.map((t, i) => (
-                <div key={i} className={`rounded-2xl p-6 ${i === 0 ? 'glass' : 'glass-light'}`}>
-                  <div className="flex gap-1 mb-3">
-                    {[...Array(t.rating)].map((_, j) => <Star key={j} size={14} fill="#f59e0b" color="#f59e0b" />)}
-                  </div>
-                  <p className="text-sm leading-relaxed italic mb-4" style={{ color: i === 0 ? '#dce4f0' : 'inherit' }}>"{t.txt}"</p>
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-primary-700 flex items-center justify-center text-white font-bold text-sm">{t.init}</div>
-                    <div>
-                      <div className="font-bold text-white text-sm">{t.name}</div>
-                      <div className="text-surface-muted text-xs">{t.role}</div>
-                    </div>
+              <div className="rounded-2xl p-6 glass">
+                <div className="flex gap-1 mb-3">
+                  {[...Array(5)].map((_, i) => <Star key={i} size={14} fill="#f59e0b" color="#f59e0b" />)}
+                </div>
+                <p className="text-sm leading-relaxed italic mb-4" style={{ color: '#dce4f0' }}>"Professional, reliable, and always on time. Highly recommend!"</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-primary-700 flex items-center justify-center text-white font-bold text-sm">J</div>
+                  <div>
+                    <div className="font-bold text-white text-sm">John D.</div>
+                    <div className="text-surface-muted text-xs">Office Manager</div>
                   </div>
                 </div>
-              ))}
+              </div>
+              <div className="rounded-2xl p-6 glass-light">
+                <div className="flex gap-1 mb-3">
+                  {[...Array(4)].map((_, i) => <Star key={i} size={14} fill="#f59e0b" color="#f59e0b" />)}
+                </div>
+                <p className="text-sm leading-relaxed italic mb-4">"The deep home cleaning was worth every penny. Felt like a brand new house when they were done."</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-primary-700 flex items-center justify-center text-white font-bold text-sm">S</div>
+                  <div>
+                    <div className="font-bold text-white text-sm">Sarah K.</div>
+                    <div className="text-surface-muted text-xs">Homeowner</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -652,7 +528,6 @@ const Services = () => {
                   <Phone size={16} /> Call 647-973-6745
                 </a>
               </div>
-              {/* Quick facts */}
               <div className="mt-8 rounded-2xl p-6" style={{ background: 'rgba(185,28,28,0.15)', border: '1px solid rgba(185,28,28,0.3)' }}>
                 <div className="font-bold text-primary mb-3">Quick Facts</div>
                 {[
@@ -668,7 +543,25 @@ const Services = () => {
               </div>
             </div>
             <div className="glass-card p-8">
-              {FAQS.map((faq, i) => <FaqItem key={i} q={faq.q} a={faq.a} />)}
+              {faqs.map((faq, i) => (
+                <div key={i} className="border-b border-surface/20 last:border-b-0">
+                  <button
+                    onClick={() => toggleFaq(i)}
+                    className="w-full flex items-center justify-between py-5 bg-none border-none cursor-pointer text-left gap-4"
+                  >
+                    <span className="font-semibold text-white text-sm">{faq.q}</span>
+                    <ChevronDown 
+                      size={18} 
+                      className={`text-primary flex-shrink-0 transition-transform duration-200 ${
+                        openFaqIndex === i ? 'rotate-180' : ''
+                      }`} 
+                    />
+                  </button>
+                  {openFaqIndex === i && (
+                    <div className="pb-5 text-surface-muted text-sm leading-relaxed">{faq.a}</div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -679,7 +572,7 @@ const Services = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-midnight via-card to-midnight"></div>
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px]"></div>
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-teal/10 rounded-full blur-[120px]"></div>
-        
+
         <div className="relative max-w-4xl mx-auto px-6 text-center">
           <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary/20 border border-primary/30 text-primary text-[11px] font-bold tracking-wider uppercase mb-4">
             <Sparkle size={12} /> GET STARTED TODAY
@@ -719,4 +612,3 @@ const Services = () => {
 };
 
 export default Services;
-
