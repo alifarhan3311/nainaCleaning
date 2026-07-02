@@ -82,6 +82,7 @@ app.use((req, res) => {
 // Global error handler (must be last)
 app.use(errorHandler);
 
+
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
