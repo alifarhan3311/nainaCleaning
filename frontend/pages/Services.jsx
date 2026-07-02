@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { serviceService } from '../services/serviceService';
 
+
 /* AnimCounter component for animated numbers */
 function AnimCounter({ target }) {
   const [val, setVal] = useState(0);
