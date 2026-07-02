@@ -1,0 +1,68 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [master]
+
+env:
+  BACKEND_IMAGE: alifarhan3311/naina-backend
+  FRONTEND_IMAGE: alifarhan3311/naina-frontend
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set Image Tag
+        run: echo "TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Docker Login
+        run: echo "${{ secrets.DOCKER_PASS }}" | docker login -u "${{ secrets.DOCKER_USER }}" --password-stdin
+
+      - name: Build & Push
+        run: |
+          docker build -t $BACKEND_IMAGE:$TAG ./backend
+          docker push $BACKEND_IMAGE:$TAG
+          docker build -t $FRONTEND_IMAGE:$TAG ./frontend
+          docker push $FRONTEND_IMAGE:$TAG
+
+      - name: Checkout GitOps Repo
+        uses: actions/checkout@v4
+        with:
+          repository: alifarhan3311/nainacleaning-deployment
+          token: ${{ secrets.GIT_TOKEN }}
+          path: nainacleaning-deployment
+
+      - name: Update Manifests & Commit
+        run: |
+          BACKEND_FILE="nainacleaning-deployment/k8s/backend-deployment.yaml"
+          FRONTEND_FILE="nainacleaning-deployment/k8s/frontend-deployment.yaml"
+          
+          if [ ! -f "$BACKEND_FILE" ] || [ ! -f "$FRONTEND_FILE" ]; then
+            echo "Error: Deployment files not found!"
+            exit 1
+          fi
+
+          echo "Updating images in manifests..."
+          
+          # Yahan se image name ke baad wala colon (:) hata diya hai taake regex sahi se match kare
+          sed -i "s|image: $BACKEND_IMAGE.*|image: $BACKEND_IMAGE:$TAG|g" "$BACKEND_FILE"
+          sed -i "s|image: $FRONTEND_IMAGE.*|image: $FRONTEND_IMAGE:$TAG|g" "$FRONTEND_FILE"
+          
+          cd nainacleaning-deployment
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          
+          git add k8s/backend-deployment.yaml k8s/frontend-deployment.yaml
+          
+          git diff --cached --quiet && echo "No changes to deploy" && exit 0
+          
+          git commit -m "🚀 deploy: update images to $TAG"
+          git push
+
+      - name: Cleanup
+        if: always()
+        run: rm -rf nainacleaning-deployment
